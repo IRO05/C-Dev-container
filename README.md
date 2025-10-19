@@ -32,8 +32,8 @@ You should see both `Client` and `Server` info.
 C-dev-container/
   - Dockerfile
   - src/
-    -- dummy.c
-    -- Makefile
+    - dummy.c
+    - Makefile
 
 ---
 
