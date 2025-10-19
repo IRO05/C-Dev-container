@@ -13,9 +13,9 @@ This repository contains a **Dockerized Linux environment for C development**, i
 - **macOS:** Docker Desktop with Linux containers support.
 
 Verify Docker is working:
-'''
+```
 docker version
-'''
+```
 You should see both `Client` and `Server` info.
 
 ---
@@ -39,10 +39,10 @@ C-dev-container/
 
 ## Step 1: Clone the Repository
 
-'''
+```
 git clone https://github.com/IRO05/C-Dev-container.git
 cd c-dev-container
-'''
+```
 
 ---
 
@@ -50,90 +50,53 @@ cd c-dev-container
 
 From the root of the repo (where `Dockerfile` is located):
 
-'''
+```
 docker build -t simple-c .
-'''
+```
 
 This builds a Docker image called `simple-c` containing Ubuntu and all necessary C development tools (`gcc`, `make`, `gdb`, etc.).
 
 ---
 
-## Step 3: Run the Docker Container
+## Step 3: Open the Dev Container in VSCode
 
-Run a container from the image and mount the `src` folder:
+With the `devcontainer.json` set up, VSCode will handle building, mounting, and attaching automatically.
 
-'''
-docker run -it --name simple-c-dev -v "<full-path-to-repo>/src:/workspace" simple-c
-'''
-
-**Notes:**
-- Replace `<full-path-to-repo>` with the absolute path on your machine.
-- On Windows, enclose the path in quotes if it contains spaces, e.g.:  
-  '''
-  -v "D:\Containers\simple-c\src:/workspace"
-  '''
-- `simple-c-dev` is the name of the container — you can reuse it later.
-
-Inside the container, your working directory `/workspace` will contain all files from the `src` folder.
+1. Open VSCode on your host machine.
+2. Open the folder containing the repo (the root, `C-dev-container`).
+3. Open Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P` on Mac) → **Dev - Containers: Reopen in Container**.
+4. VSCode will:
+   - Build the container if it doesn’t exist yet.
+   - Mount your host `src` folder into `/workspace`.
+   - Install the C/C++ extension inside the container if it isn’t already installed.
+   - Open `/workspace` as the working directory.
+   - Initialize IntelliSense and other C/C++ features automatically.
 
 ---
 
 ### Optional: Stop and Restart Container
 
-You can stop the container inside the terminal:
-
-'''
-exit
-'''
-
-Or detach without stopping:
-
-**Ctrl + P, then Ctrl + Q**
-
-To restart later from the command line:
-
-'''
-docker start -ai simple-c-dev
-'''
-
-Alternatively, you can **use Docker Desktop**:
-- Open Docker Desktop → Containers → simple-c-dev → Start or Restart
-- Click **Terminal** in the GUI to open a shell inside the container
+- Close VSCode or detach from the container: **Ctrl + Shift + P → Dev - Containers: Close Remote Connection**.
+- Reopen the container anytime:
+  1. Open VSCode in the repo folder.
+  2. Command Palette → **Dev - Containers: Reopen in Container**.
+- Docker Desktop can also be used to **start or stop the container**, but VSCode will attach to it automatically when you reopen.
 
 ---
 
-## Step 4: Connect VSCode to the Container
+## Step 4: Build and Run Your Code
 
-1. Open VSCode.
-2. Open the folder containing the repo (the root, `simple-c`).
-3. Open Command Palette (`Ctrl+Shift+P`) → **Dev - Containers: Attach to Running Container...**  
-4. Select `simple-c-dev`.
+Inside the VSCode terminal (which is already in `/workspace`):
 
-VSCode will now:
-- Open inside the container.
-- Use `/workspace` as the working directory.
-- Allow editing, building, and debugging C programs using the container’s Linux environment.
+```
+cd /workspace       # Only needed if not already there
+make                # Build your project
+./<executable_name> # Run your program
+```
 
----
-
-## Step 5: Build and Run Your Code
-
-Inside VSCode's terminal (or the container terminal):
-
-'''
-cd /workspace          # If not already here
-make                   # Builds your project
-./<executable_name>    # Run your program
-'''
-
-Example for a dummy file in `src`:
-
-'''
-gcc dummy.c -o dummy
-./dummy
-'''
-
----
+Notes:
+- All changes you make are saved on your host in `src` — nothing is lost if the container is stopped.
+- IntelliSense, autocomplete, and error squiggles should work automatically inside the container.
 
 ## Tips and Notes
 
@@ -141,9 +104,9 @@ gcc dummy.c -o dummy
 - **Persistence:** All your code lives on the host (`src`) — nothing is lost when the container is removed.
 - **Multiple devices:** You can clone this repo on any machine with Docker Desktop and VSCode. Build the image and mount the `src` folder — everything works identically.
 - **Rebuilding image:** If you update the Dockerfile (e.g., install new tools), rebuild with:
-'''
+```
 docker build -t simple-c .
-'''
+```
 - **Debugging with gdb:** Install the **C/C++ extension** in VSCode. You can configure `.vscode/launch.json` to debug inside `/workspace`.
 
 ---
