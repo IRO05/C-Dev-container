@@ -1,0 +1,20 @@
+{
+  "name": "Simple C Dev Container",
+  "image": "simple-c",
+  "workspaceFolder": "/workspace",
+  "mounts": [
+    "source=${localWorkspaceFolder}/src,target=/workspace,type=bind,consistency=cached"
+  ],
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools"
+      ]
+    },
+    "settings": {
+        "C_Cpp.intelliSenseEngine": "Default",
+        "C_Cpp.default.compilerPath": "/usr/bin/gcc"
+    }
+
+  }
+}
