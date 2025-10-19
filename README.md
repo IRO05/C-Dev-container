@@ -30,10 +30,10 @@ You should see both `Client` and `Server` info.
 ## Repository structure
 
 C-dev-container/
- ├─ Dockerfile
- └─ src/
-     ├─ dummy.c
-     └─ Makefile
+  - Dockerfile
+  - src/
+    -- dummy.c
+    -- Makefile
 
 ---
 
